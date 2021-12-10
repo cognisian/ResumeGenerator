@@ -1,0 +1,30 @@
+{{ resume.name }}
+{{ resume.email }}
+Cell: {{ resume.phone }}
+LinkedIn: {{ resume.linkedin_url }}
+GitHub: {{ resume.github_url }}
+
+Objective
+
+{{ resume.objective }}
+
+Computer Skills
+{% for skill_type in resume["skills"] %}
+{{ skill_type }}: {{ resume["skills"][skill_type] | join(', ') }}
+{%- endfor %}
+
+Experience
+{% for exp in resume["experience"] %}
+{{ exp.start_year }} - {{ exp.end_year }}    {{ exp.company_name}}    {{ exp.location}}
+
+{{ exp.title }}
+{% for acc in exp["accomplishments"] -%}
+{{ acc.text}}
+{% endfor -%}
+{%- endfor %}
+
+Education
+{% for edu in resume["education"] %}
+{{ edu.start_year  }}-{{ edu.end_year  }}    {{ edu.school  }}    {{ edu.location  }}
+{{ edu.program }}
+{% endfor %}

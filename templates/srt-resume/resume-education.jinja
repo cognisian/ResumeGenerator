@@ -1,0 +1,15 @@
+{% block education %}
+	<div class="yui-gf last">
+	    <div class="yui-u first">
+	        <h2>Education</h2>
+	    </div>
+	    
+        {% for edu in resume["education"] %}
+	    <div class="yui-u">
+	        <h2>{{ edu.school  }}  {{ edu.location  }}  {{ edu.start_year  }}-{{ edu.end_year  }}</h2>
+	        <h3>{{ edu.program }} </h3>
+	    </div>
+	    {% endfor %}
+	    
+	</div><!--// .yui-gf -->
+{% endblock education %}

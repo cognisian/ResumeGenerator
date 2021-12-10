@@ -1,0 +1,25 @@
+{% extends "base.jinja" %}
+{% block layout %}
+    <div id="hd">
+        <div class="yui-gc">
+            <div class="yui-u first">
+                <h1>{{ resume.name }}</h1>
+                <h2>{{ resume.title }}</h2>
+            </div>
+
+            <div class="yui-u">
+                <div class="contact-info">
+                    <h3><a id="pdf" href="#">Download PDF</a></h3>
+                    <h3><a href="mailto:{{ resume.email }}">{{ resume.email }}</a></h3>
+                    <h3>{{ resume.phone }}</h3>
+                </div><!--// .contact-info -->
+            </div>
+        </div><!--// .yui-gc -->
+    </div><!--// hd -->
+
+    {% block content %}{% endblock %}
+    
+    <div id="ft">
+        <p>{{ resume.name }} &mdash; <a href="mailto:{{ resume.email }}">{{ resume.email }}</a> &mdash; {{ resume.phone}}</p>
+    </div><!--// footer -->
+{% endblock %}

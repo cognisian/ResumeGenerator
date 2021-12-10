@@ -1,0 +1,27 @@
+{% block experience %}
+
+    <div class="yui-gf">
+    
+        <div class="yui-u first">
+            <h2>Experience</h2>
+        </div><!--// .yui-u -->
+
+        <div class="yui-u">
+        {% for exp in resume["experience"] %}
+        
+            <div class="job">
+                <h2>{{ exp.company_name | e }}</h2>
+                <h3>{{ exp.title }}</h3>
+                <h4>{{ exp.start_year }} - {{ exp.end_year }}</h4>
+                <p>
+                {% for acc in exp["accomplishments"] %}
+                    <span>{{ acc.text | e }}</span>        
+                {% endfor %}
+                </p>
+            </div>
+        
+        {% endfor %}
+        </div><!--// .yui-u -->
+    </div><!--// .yui-gf -->
+                    
+{% endblock experience %}

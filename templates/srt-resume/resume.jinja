@@ -1,0 +1,33 @@
+{% extends "layout.jinja" %}
+{% block content %}
+
+    <div id="bd">
+            <div id="yui-main">
+                <div class="yui-b">
+                
+                    {# Resume OBJECTIVE #}
+                    <div class="yui-gf">
+                        <div class="yui-u first">
+                            <h2>Objective</h2>
+                        </div>
+                        <div class="yui-u">
+                            <p class="enlarge">
+                                {{ resume.objective }} 
+                            </p>
+                        </div>
+                    </div><!--// .yui-gf -->
+                    
+                    {# Resume SKILLS #}
+                    {% include "resume-skills.jinja" with context %}
+                    
+                    {# Resume EXPERIENCE #}
+                    {% include "resume-experience.jinja" with context %}
+                    
+                    {# Resume EDUCATION #}
+                    {% include "resume-education.jinja" with context %}
+                    
+                </div><!--// .yui-b -->
+            </div><!--// yui-main -->
+        </div><!--// bd -->
+        
+{% endblock %}
