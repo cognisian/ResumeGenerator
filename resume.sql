@@ -22,10 +22,12 @@ SELECT resume.id, exp.id, exp.company_name, exp.location,
                 exp.start_year, exp.end_year, exp.title
 FROM experience exp
 JOIN resume ON exp.resume_id = resume.id 
-WHERE resume.id  = ?;
+WHERE resume.id  = ?
+ORDER BY exp.end_year DESC;
 
 /** For Each company get the set of accomplishments */
-SELECT exp.id, acc.text
+SELECT exp.id, acc.text, acc.sort_ord
 FROM accomplishment acc
 JOIN experience exp ON acc.company_id = exp.id
-WHERE exp.id  = ? AND exp.resume_id = ?;
+WHERE exp.id  = ? AND exp.resume_id = ?
+ORDER BY acc.sort_ord;

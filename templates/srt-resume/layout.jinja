@@ -9,9 +9,12 @@
 
             <div class="yui-u">
                 <div class="contact-info">
-                    <h3><a id="pdf" href="#">Download PDF</a></h3>
                     <h3><a href="mailto:{{ resume.email }}">{{ resume.email }}</a></h3>
                     <h3>{{ resume.phone }}</h3>
+                    <br />
+                    <h4><a href="{{ resume.linkedin_url }}">LinkedIn</a></h4>
+                    <h4><a href="{{ resume.github_url }}">GitHub</a></h4>
+                    <h4><a href="{{ resume.website_url }}">Website</a></h4>
                 </div><!--// .contact-info -->
             </div>
         </div><!--// .yui-gc -->

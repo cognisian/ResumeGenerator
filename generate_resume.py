@@ -4,9 +4,16 @@ import os
 import sqlite3
 
 from jinja2 import Environment, FileSystemLoader
+from weasyprint import HTML, CSS
 
 
 def build_resume_details():
+    """
+    Using the resume database build the resume data structure
+
+    :returns: Resume data dict
+    :rtype: dict
+    """
 
     # Resume data to pass to Jinja templates
     resume = {}
@@ -52,6 +59,7 @@ def build_resume_details():
                 FROM education edu
                 JOIN resume ON edu.resume_id = resume.id
                 WHERE resume.id = ?
+                ORDER BY edu.end_year DESC;
             """, str(resume["id"])).fetchall()
 
             resume["education"] = []
@@ -68,7 +76,8 @@ def build_resume_details():
                                 exp.title, exp.start_year, exp.end_year
                 FROM experience exp
                 JOIN resume ON exp.resume_id = resume.id
-                WHERE resume.id  = ?;
+                WHERE resume.id  = ?
+                ORDER BY exp.end_year DESC;
             """, str(resume["id"])).fetchall()
 
             resume["experience"] = []
@@ -82,10 +91,11 @@ def build_resume_details():
                 company['accomplishments'] = []
                 with closing(conn.cursor()) as acc_cur:
                     rows = acc_cur.execute("""
-                        SELECT exp.id, acc.text
+                        SELECT exp.id, acc.text, acc.sort_ord
                             FROM accomplishment acc
                             JOIN experience exp ON acc.company_id = exp.id
-                            WHERE exp.id  = ? AND exp.resume_id = ?;
+                            WHERE exp.id  = ? AND exp.resume_id = ?
+                            ORDER BY acc.sort_ord;
                     """, [str(company["id"]), str(resume["id"])]).fetchall()
                     for row in rows:
                         accomplish = {}
@@ -99,7 +109,18 @@ def build_resume_details():
     return resume
 
 
-def main(template, output):
+def main(template, output, pdf=False):
+    """
+    Generate the Resume from the specified template
+
+    :param template: The name of the template to use for resume
+    :type template: str
+    :param output: The name of the file to write the resume to.  If output is
+    not specified then will write the resume to stdout.
+    :type output: str
+    :param pdf: Flag indicating if a PDF version should also be rendered.
+    :type pdf: bool
+    """
 
     # Setup Jinja2 template loading
     template_loader = FileSystemLoader(searchpath=template)
@@ -110,26 +131,42 @@ def main(template, output):
     tmpl = env.get_template("resume.jinja")
     resume_details = tmpl.render(resume=resume)
 
-    # Write out the resume to file if provided else
-    # print it to stdout
+    # Write out the resume to file if provided
+    # else print it to stdout
     if (output is not None and output != ''):
-        with (open(output, "w")) as resume_file:
-            resume_file.write(resume_details)
+        output_path_file = os.path.splitext(output)[0]
+        output_ext = os.path.splitext(output)[1]
+        if output_ext == '.html' or output_ext == '.htm':
+            with (open(output, "w")) as resume_file:
+                resume_file.write(resume_details)
+            # If want PDF can only be generated from HTML
+            if pdf:
+                pdf_file = output_path_file + '.pdf'
+                css = CSS(string='''
+                    @page {
+                        size: letter
+                    }
+                ''')
+                HTML(output).write_pdf(pdf_file, stylesheets=[css])
     else:
         print(resume_details)
 
 
 if __name__ == '__main__':
     # Parse command line
-    parser = argparse.ArgumentParser(description='Generate Resume')
+    parser = argparse.ArgumentParser(
+        description='Generate Resume from template')
     parser.add_argument('--template', type=str, required=True,
                         help='Name of the resume template to use')
     parser.add_argument('--output', type=str, nargs='?', default='',
                         help='Path to output the rendered resume html file')
+    parser.add_argument('--pdf', action='store_true',
+                        help="""Flag to indicate that a PDF version should also
+                        be rendered""")
     args = parser.parse_args()
 
     # Get the directory of the resume template by name
     template_dir = f"templates/{args.template}"
     template = os.path.normpath(os.path.join(os.getcwd(), template_dir))
 
-    main(template, args.output)
+    main(template, args.output, args.pdf)
