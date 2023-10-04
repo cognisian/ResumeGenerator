@@ -1,0 +1,38 @@
+{% extends "base.jinja" %}
+{% block layout %}
+<!-- Content Container -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+    		<div class="wrapper">
+				<!-- Use icons from fontawesome when you are adding new item in the contact list  -->             
+ 
+				<div class="sidebar-wrapper bg-dark">
+				    <div class="profile-container bg-primary">
+				        <img class="profile-img" src="/theme/images/Upwork_Profile.png" alt="profile picture" />
+				        <h1 class="name">Sean Chalmers</h1>
+				        <h3 class="tagline">Programmer, Developer of Code</h3>
+				    </div><!--//profile-container-->
+				    
+				    <div class="contact-container container-block">
+				        <ul class="list-unstyled contact-list">
+				            <li class="email"><i class="fa fa-envelope"></i><a href="mailto: seandchalmers@yahoo.ca">seandchalmers@yahoo.ca</a></li>
+				            <li class="phone"><i class="fa fa-phone"></i><a href="tel:(289) 681-2048">(289) 681-2048</a></li>
+				            <li class="linkedin"><i class="fa fa-linkedin"></i><a href="https://in.linkedin.com/in/seanchalmers" target="_blank">LinkedIn Profile</a></li>
+				            <li class="github"><i class="fa fa-github"></i><a href="http://github.com/cognisian" target="_blank">GitHub Repos</a></li>
+				        </ul>
+				    </div><!--//contact-container-->
+				</div><!--//sidebar-wrapper-->	    
+				
+				<div class="main-wrapper">
+
+    			{% block content %}{% endblock %}
+ 
+ 	    		</div><!--//main-wrapper-->
+			</div>
+        </div>
+    </div>
+</div>
+<!-- End Content Container -->
+
+{% endblock %}

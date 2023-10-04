@@ -23,7 +23,7 @@ def build_resume_details():
         conn.row_factory = sqlite3.Row
 
         cursor = conn.cursor()
-        
+
         # Get the Resume details
         with closing(cursor) as resume_cur:
             row = resume_cur.execute("""
@@ -37,6 +37,7 @@ def build_resume_details():
                 resume[data] = row[data]
 
         # Get the Resume Skills section and populate the template details
+        cursor = conn.cursor()
         with closing(cursor) as skills_cur:
             rows = skills_cur.execute("""
                 SELECT skl.type, skl.name
@@ -54,6 +55,7 @@ def build_resume_details():
                 resume["skills"][row["type"]].append(row["name"])
 
         # Get the Resume Education section and populate the template details
+        cursor = conn.cursor()
         with closing(cursor) as edu_cur:
             rows = edu_cur.execute("""
                 SELECT edu.school, edu.location, edu.program,
@@ -72,6 +74,7 @@ def build_resume_details():
                 resume["education"].append(institution.copy())
 
         # Get the Resume Experience section and populate the template details
+        cursor = conn.cursor()
         with closing(cursor) as exp_cur:
             rows = exp_cur.execute("""
                 SELECT exp.id, exp.company_name, exp.location,
@@ -91,6 +94,7 @@ def build_resume_details():
                 # Get the Resume Accomplishment section and populate the
                 # template details
                 company['accomplishments'] = []
+                cursor = conn.cursor()
                 with closing(cursor) as acc_cur:
                     rows = acc_cur.execute("""
                         SELECT exp.id, acc.text, acc.sort_ord
@@ -157,18 +161,18 @@ def main(template, output, pdf=False):
 #
 # MAIN
 #
- 
+
 # default location of directory containing templates
 templates_dir = os.getcwd() + '/templates'
 
 # Parse command line
 parser = argparse.ArgumentParser(
-                    description='Generate Resume from template')
+    description='Generate Resume from template')
 parser.add_argument('--template',
                     type=str, required=True,
                     help='Name of the resume template to use')
 parser.add_argument('--templates-dir',
-                    type=str, nargs='?', 
+                    type=str, nargs='?',
                     default=templates_dir,
                     help="""Root directory containing the directories of 
                     templates. Default: cwd + templates/""")
@@ -184,6 +188,6 @@ parser.add_argument('--pdf',
 args = parser.parse_args()
 
 # Get the directory of the resume template by name
-template = os.path.normpath(os.path.join(args.templates-dir, args.template))
+template = os.path.normpath(os.path.join(args.templates_dir, args.template))
 
 main(template, args.output, args.pdf)

@@ -1,0 +1,16 @@
+{% block education %}
+	<section class="section education-section">
+	<h2 class="section-title"><i class="fa fa-university bg-primary"></i>Education</h2>
+	    
+        {% for edu in resume["education"] %}
+        <div class="item">
+	    	<div class="upper-row">
+			    <h3 class="degree">{{ edu.program }}</h3>
+			    <div class="time">{{ edu.start_year  }}-{{ edu.end_year  }}</div>
+			</div>
+			<div class="institute">{{ edu.school  }} {{ edu.location  }}</div>
+		</div><!--//item-->
+	    {% endfor %}
+	    
+	</section><!--//education-container-->
+{% endblock education %}

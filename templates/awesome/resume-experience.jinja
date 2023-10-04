@@ -1,0 +1,26 @@
+{% block experience %}
+
+	<section class="section experiences-section">
+	    <h2 class="section-title"><i class="fa fa-briefcase bg-primary"></i>Experience</h2>
+    
+        {% for exp in resume["experience"] %}
+        
+        	<div class="item">
+            <div class="meta">
+                <div class="upper-row">
+                    <h3 class="job-title">{{ exp.title }}</h3>
+                    <div class="time">{{ exp.start_year }} - {{ exp.end_year }}</div>
+                </div><!--//upper-row-->
+                <div class="company">{{ exp.company_name | e }}</div>
+            </div><!--//meta-->
+            <div class="details">
+            	{% for acc in exp["accomplishments"] %}
+                    <span>{{ acc.text | e }}</span>        
+                {% endfor %}
+            </div><!--//details-->
+        </div><!--//item-->
+        	
+        {% endfor %}
+        
+	</section><!--//section-->
+{% endblock experience %}

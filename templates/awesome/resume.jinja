@@ -1,0 +1,21 @@
+{% extends "layout.jinja" %}
+{% block content %}
+
+                    {# Resume OBJECTIVE #}
+					<section class="section summary-section">
+					<h2 class="section-title"><i class="fa fa-user bg-primary"></i>Career Profile</h2>
+					<div class="summary">
+					    <p>{{ resume.objective }}</p>
+					</div><!--//summary-->
+					</section><!--//section-->
+                    
+                    {# Resume SKILLS #}
+                    {% include "resume-skills.jinja" with context %}
+                    
+                    {# Resume EXPERIENCE #}
+                    {% include "resume-experience.jinja" with context %}
+                    
+                    {# Resume EDUCATION #}
+                    {% include "resume-education.jinja" with context %}
+                    
+{% endblock %}
